@@ -14,13 +14,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Fetch FTC SDK
-      run: git clone https://github.com/FIRST-Tech-Challenge/FtcRobotController
+      run: git clone https://github.com/FIRST-Tech-Challenge/FtcRobotController FtcRobotControllerTemplate
     - name: Contextualize code
       continue-on-error: true
-      run: mv ./* FtcRobotController/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/
+      run: mv ./* FtcRobotControllerTemplate/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/
     - name: Move FTC SDK
       continue-on-error: true
-      run: mv FtcRobotController/* .
+      run: mv FtcRobotControllerTemplate/* .
     - name: set up JDK 11
       uses: actions/setup-java@v3
       with:
