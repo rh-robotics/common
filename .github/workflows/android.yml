@@ -13,8 +13,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      statuses: write 
 
     steps:
     - uses: actions/checkout@v3
@@ -40,27 +38,11 @@ jobs:
       run: find .
     - name: Build with Gradle
       run: ./gradlew build
-    # https://dev.to/doctolib/github-actions-how-to-push-a-github-status-in-addition-of-github-checks-3d27
-    - name: "Create a check run"
-      uses: actions/github-script@v6
-      env:
-        parameter_url: '${{ github.event.workflow_run.html_url }}'
-      with:
-        debug: ${{ secrets.ACTIONS_STEP_DEBUG || false }}
-        script: |
-          await github.rest.checks.create({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            head_sha: context.sha,
-            name: "android-build",
-            status: "completed",
-            // Careful, code injection can happen.
-            conclusion: "${{ github.event.workflow_run.conclusion }}",
-            // This is safe, not string interpolation.
-            details_url: process.env.parameter_url,
-            output: {
-              title: "Android Build",
-              summary: "Automated android build",
-              text: "This may take a bit of time. Only bypass (if you can) if you are 100% sure you are in the right and you are in a hurry.",
-            },
-          });
+    - name: Create status
+      uses: Sibz/github-status-action@v1
+      with: 
+        authToken: ${{secrets.GITHUB_TOKEN}}
+        context: 'Android Build'
+        description: 'Passed'
+        state: 'success'
+        sha: ${{github.event.pull_request.head.sha || github.sha}}
