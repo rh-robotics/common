@@ -36,6 +36,11 @@ jobs:
       run: chmod +x gradlew
     - name: Pre-build debug find
       run: find .
+    - name: Cache build files
+      uses: actions/cache@v3.0.8
+      with:
+        path: FtcRobotController/build TeamCode/build # A list of files, directories, and wildcard patterns to cache and restore  
+        key: ${{ runner.os }}-incremental-build # An explicit key for restoring and saving the cache
     - name: Build with Gradle
       run: ./gradlew build
     - name: Create status
