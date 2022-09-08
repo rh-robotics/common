@@ -27,8 +27,6 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
-    - name: Fetch submodules
-      run: bash ./scripts/submodule.sh
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
