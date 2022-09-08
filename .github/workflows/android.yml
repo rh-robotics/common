@@ -13,8 +13,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Fetch submodules
-      run: bash ./scripts/submodule.sh
     - name: Fetch FTC SDK
       run: git clone https://github.com/FIRST-Tech-Challenge/FtcRobotController
     - name: Contextualize code
@@ -27,6 +25,8 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: gradle
+    - name: Fetch submodules
+      run: bash ./scripts/submodule.sh
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
