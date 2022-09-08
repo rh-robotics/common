@@ -16,8 +16,10 @@ jobs:
     - name: Fetch FTC SDK
       run: git clone https://github.com/FIRST-Tech-Challenge/FtcRobotController
     - name: Contextualize code
-      run: mv *.java FtcRobotController/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/
+      continue-on-error: true
+      run: mv ./* FtcRobotController/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/
     - name: Move FTC SDK
+      continue-on-error: true
       run: mv FtcRobotController/* .
     - name: set up JDK 11
       uses: actions/setup-java@v3
