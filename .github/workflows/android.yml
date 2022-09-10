@@ -1,0 +1,54 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_run:
+    workflows: ["Run tests"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+      with:
+       repository: rh-robotics/common
+    - name: Fetch FTC SDK
+      run: git clone https://github.com/FIRST-Tech-Challenge/FtcRobotController FtcRobotControllerTemplate
+    - name: Contextualize code
+      continue-on-error: true
+      run: mv ./* FtcRobotControllerTemplate/TeamCode/src/main/java/org/firstinspires/ftc/teamcode/
+    - name: Move FTC SDK
+      continue-on-error: true
+      run: mv FtcRobotControllerTemplate/* .
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: gradle
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Pre-build debug find
+      run: find .
+    - name: Cache build files
+      uses: actions/cache@v3.0.8
+      with:
+        path: FtcRobotController/build TeamCode/build # A list of files, directories, and wildcard patterns to cache and restore  
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }} # An explicit key for restoring and saving the cache
+        restore-keys: ${{ runner.os }}-gradle-
+    - name: Build with Gradle
+      run: ./gradlew build
+    - name: Create status
+      uses: Sibz/github-status-action@v1
+      with: 
+        authToken: ${{secrets.GITHUB_TOKEN}}
+        context: 'Android Build'
+        description: 'Passed'
+        state: 'success'
+        sha: ${{github.event.pull_request.head.sha || github.sha}}
