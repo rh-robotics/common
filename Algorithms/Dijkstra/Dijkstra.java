@@ -27,10 +27,10 @@ public class Dijkstra {
         }
     }
 
-    publicList<Vertex> getShortestPathTo(Vertex targetVerte) {
+    public List<Vertex> getShortestPathTo(Vertex targetVertex) {
         List<Vertex> path = new ArrayList<>();
 
-        for (Vertex vertex = targetVerte; vertex != null; vertex = vertex.getPreviousVertex()) {
+        for (Vertex vertex = targetVertex; vertex != null; vertex = vertex.getPreviousVertex()) {
             path.add(vertex);
         }
 
