@@ -45,7 +45,7 @@ public class Vertex implements Comparable<Vertex> {
         return minDistance;
     }
 
-    pubic void setMinDistance(double minDistance) {
+    public void setMinDistance(double minDistance) {
         this.minDistance = minDistance;
     }
 
